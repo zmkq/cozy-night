@@ -7,7 +7,7 @@
     "prebuild": "node -e \"const fs = require('fs'); if (!fs.existsSync('data/config.json')) { fs.copyFileSync('data/config.example.json', 'data/config.json'); console.log('Created data/config.json from template.'); }\"",
     "dev": "next dev",
     "dev:party": "partykit dev",
-    "build": "next build",
+    "build": "tsx lib/seed.ts && next build",
     "start": "next start",
     "lint": "eslint",
     "deploy:party": "partykit deploy"
@@ -48,6 +48,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.0",
     "tailwindcss": "^4",
+    "tsx": "^4.22.3",
     "typescript": "^5"
   }
 }
