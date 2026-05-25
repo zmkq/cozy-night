@@ -104,6 +104,7 @@ interface Player {
   connected: boolean;
   score: number;
   lastActivity: number;
+  isSpectator?: boolean;
 }
 
 interface GameRoom {
@@ -273,7 +274,7 @@ function log(message: string, data?: unknown) {
 }
 
 function getConnectedPlayers(room: GameRoom): Player[] {
-  return Object.values(room.players).filter((p) => p.connected);
+  return Object.values(room.players).filter((p) => p.connected && !p.isSpectator);
 }
 
 function sleep(ms: number) {
@@ -654,7 +655,12 @@ export default class CozyGameServer implements Party.Server {
       this.room.players[userId].odersId = conn.id;
       this.room.players[userId].lastActivity = Date.now();
     } else {
-      log('New player joining', { userId, name });
+      // Check if joining mid-game — become a spectator
+      const isMidGame =
+        !!this.room.currentGame &&
+        !['lobby', 'wrapped'].includes(this.room.phase);
+
+      log(isMidGame ? 'Mid-game join — spectator' : 'New player joining', { userId, name });
       this.room.players[userId] = {
         id: userId,
         odersId: conn.id,
@@ -664,10 +670,11 @@ export default class CozyGameServer implements Party.Server {
         connected: true,
         score: 0,
         lastActivity: Date.now(),
+        isSpectator: isMidGame,
       };
 
-      // First player becomes host
-      if (!this.room.hostId) {
+      // First player becomes host (only non-spectators)
+      if (!this.room.hostId && !isMidGame) {
         this.room.hostId = userId;
         log('Host assigned', { hostId: userId });
       }

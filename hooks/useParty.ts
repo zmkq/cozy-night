@@ -98,6 +98,7 @@ export interface Player {
   ready: boolean;
   connected: boolean;
   score: number;
+  isSpectator?: boolean;
 }
 
 export interface GameRoom {

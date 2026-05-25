@@ -6,6 +6,7 @@ import { logoutAction } from '@/app/actions';
 import Link from 'next/link';
 import { LogOut, Home, Gamepad2, Trophy } from 'lucide-react';
 import { PartyWrapper } from '@/components/christmas/PartyWrapper';
+import { SpectatorGate } from '@/components/games/SpectatorGate';
 import { getSystemSettings } from '@/lib/db';
 import config from '@/data/config.json';
 
@@ -70,7 +71,7 @@ export default async function MainLayout({
         </header>
 
         <main className="flex-1 max-w-6xl mx-auto w-full pb-28 md:pb-8 px-4">
-          {children}
+          <SpectatorGate>{children}</SpectatorGate>
         </main>
 
         {/* Mobile Bottom Nav - Dark Sticker Theme */}
