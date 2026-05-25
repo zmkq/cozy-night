@@ -125,6 +125,11 @@ interface RoundData {
   prompt?: string | { p: string; a: string };
   word?: string;
   saboteurId?: string;
+  category?: string;
+  grid?: string[];
+  targetIndex?: number;
+  coords?: string;
+  targetWord?: string;
   drawerId?: string;
   fakeDrawerId?: string;
   guesserIds?: string[];
@@ -221,6 +226,7 @@ type ClientMessage =
   | { type: 'heist-accusation'; targetId: string }
   | { type: 'heist-continue' }
   | { type: 'heist-start-accusation' }
+  | { type: 'saboteur-guess'; word: string }
   | { type: 'admin-end-game' };
 
 // ============ PROMPTS ============
@@ -491,6 +497,9 @@ export default class CozyGameServer implements Party.Server {
           break;
         case 'heist-start-accusation':
           this.handleHeistStartAccusation(sender.id);
+          break;
+        case 'saboteur-guess':
+          this.handleSaboteurGuess(sender.id, msg.word);
           break;
         case 'admin-end-game':
           this.handleAdminEndGame(sender.id);
@@ -787,10 +796,26 @@ export default class CozyGameServer implements Party.Server {
   setupSaboteurRound() {
     const connectedPlayers = getConnectedPlayers(this.room);
     const saboteurId = getRandomItem(connectedPlayers).id;
-    const deck = (this.customPrompts?.saboteurPrompts || SABOTEUR_PROMPTS) as (string | { p: string; a: string })[];
-    const prompt = getRandomItem(deck);
-    this.room.roundData = { prompt, saboteurId };
-    log('Saboteur setup', { saboteurId });
+    const grids = (config as any).chameleonGrids || [
+      {
+        category: "Holiday Items",
+        words: ["Santa", "Elves", "Reindeer", "Sleigh", "Snowman", "Presents", "Stockings", "Chimney", "Holly", "Wreath", "Mistletoe", "Carols", "Ornaments", "Eggnog", "Tinsel", "Star"]
+      }
+    ];
+    const gridObj = getRandomItem(grids) as any;
+    const targetIndex = Math.floor(Math.random() * 16);
+    const row = Math.floor(targetIndex / 4) + 1;
+    const col = (targetIndex % 4) + 1;
+
+    this.room.roundData = {
+      category: gridObj.category,
+      grid: gridObj.words,
+      targetIndex: targetIndex,
+      coords: `Row ${row}, Col ${col}`,
+      targetWord: gridObj.words[targetIndex],
+      saboteurId
+    };
+    log('Saboteur setup', { saboteurId, category: gridObj.category, targetWord: gridObj.words[targetIndex] });
   }
 
   setupRapidFireRound() {
@@ -1317,12 +1342,24 @@ export default class CozyGameServer implements Party.Server {
     if (this.room.currentGame === 'saboteur') {
       role =
         player.id === this.room.roundData?.saboteurId ? 'saboteur' : 'innocent';
+      if (role === 'innocent') {
+        data = {
+          category: this.room.roundData?.category,
+          grid: this.room.roundData?.grid,
+          coords: this.room.roundData?.coords,
+        };
+      } else {
+        data = {
+          category: this.room.roundData?.category,
+          grid: this.room.roundData?.grid,
+          coords: '??',
+        };
+      }
     } else if (this.room.currentGame === 'heist') {
       const heistState = this.room.heistState;
       if (heistState) {
         if (player.id === heistState.roles[player.id])
           role = heistState.roles[player.id]; // 'snitch' or 'crew'
-        // Actually we want to send 'snitch' or 'crew'
         role = heistState.roles[player.id];
       }
     }
@@ -1801,6 +1838,25 @@ export default class CozyGameServer implements Party.Server {
         }
       }
     }
+  }
+
+  handleSaboteurGuess(playerId: string, word: string) {
+    if (this.room.phase !== 'results' || !this.room.roundData) return;
+    const roundData = this.room.roundData as any;
+    if (playerId !== roundData.saboteurId) return;
+
+    if (word.toLowerCase().trim() === roundData.targetWord.toLowerCase().trim()) {
+      // Saboteur successfully escaped! Give them bonus points
+      const saboteur = this.room.players[playerId];
+      if (saboteur) {
+        saboteur.score += 400; // escape bonus
+      }
+      this.room.roundData.eventMessage = `GLORIOUS ESCAPE! ${saboteur?.name || 'The Saboteur'} guessed the word "${word}" correctly and stole the spotlight! 🏃‍♂️💨`;
+    } else {
+      const saboteur = this.room.players[playerId];
+      this.room.roundData.eventMessage = `ESCAPE FAILED! ${saboteur?.name || 'The Saboteur'} guessed "${word}" but the secret word was "${roundData.targetWord}". 💀`;
+    }
+    this.broadcastSync();
   }
 
   // SHOTCALLER logic (already moved below)
