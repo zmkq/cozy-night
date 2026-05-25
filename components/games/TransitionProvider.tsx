@@ -12,6 +12,7 @@ import {
   TransitionConfig,
   TransitionType,
 } from '@/components/games/CinematicTransition';
+import { useSound } from '@/hooks/useSound';
 
 interface TransitionContextType {
   trigger: (config: TransitionConfig) => Promise<void>;
@@ -36,6 +37,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
   const [resolvePromise, setResolvePromise] = useState<(() => void) | null>(
     null
   );
+  const { play } = useSound();
 
   const trigger = useCallback(
     (transitionConfig: TransitionConfig): Promise<void> => {
@@ -59,6 +61,7 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
   // Convenience methods
   const triggerRoundStart = useCallback(
     (round: number, maxRounds: number) => {
+      play('notification', 0.6);
       return trigger({
         type: round === maxRounds ? 'final-round' : 'round-start',
         round,
@@ -66,59 +69,68 @@ export function TransitionProvider({ children }: { children: ReactNode }) {
         duration: round === maxRounds ? 2500 : 2000,
       });
     },
-    [trigger]
+    [trigger, play]
   );
 
   const triggerVoting = useCallback(() => {
+    play('drumroll', 0.5);
     return trigger({ type: 'voting-start', duration: 1500 });
-  }, [trigger]);
+  }, [trigger, play]);
 
   const triggerResults = useCallback(() => {
+    play('ding', 0.5);
     return trigger({ type: 'results-reveal', duration: 1500 });
-  }, [trigger]);
+  }, [trigger, play]);
 
   const triggerCaught = useCallback(
     (playerName: string) => {
+      play('buzzer', 0.6);
       return trigger({ type: 'caught', playerName, duration: 2500 });
     },
-    [trigger]
+    [trigger, play]
   );
 
   const triggerEscaped = useCallback(
     (playerName: string) => {
+      play('ding', 0.5);
       return trigger({ type: 'escaped', playerName, duration: 2500 });
     },
-    [trigger]
+    [trigger, play]
   );
 
   const triggerEpicWin = useCallback(
     (playerName: string) => {
+      play('tada', 0.6);
       return trigger({ type: 'epic-win', playerName, duration: 2500 });
     },
-    [trigger]
+    [trigger, play]
   );
 
   const triggerEpicFail = useCallback(
     (playerName: string) => {
+      play('fail', 0.5);
       return trigger({ type: 'epic-fail', playerName, duration: 2000 });
     },
-    [trigger]
+    [trigger, play]
   );
 
   const triggerFinalRound = useCallback(
     (round: number, maxRounds: number) => {
+      play('drumroll', 0.7);
       return trigger({ type: 'final-round', round, maxRounds, duration: 2500 });
     },
-    [trigger]
+    [trigger, play]
   );
 
   const triggerCloseCall = useCallback(() => {
+    play('notification', 0.5);
     return trigger({ type: 'close-call', duration: 2000 });
-  }, [trigger]);
+  }, [trigger, play]);
 
   const triggerGameOver = useCallback(() => {
+    play('fail', 0.6);
     return trigger({ type: 'game-over', duration: 2000 });
-  }, [trigger]);
+  }, [trigger, play]);
 
   return (
     <TransitionContext.Provider
