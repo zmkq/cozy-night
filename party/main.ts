@@ -1657,7 +1657,9 @@ export default class CozyGameServer implements Party.Server {
 
   // ---- UTILITY METHODS ----
   findPlayerByConnId(connId: string): Player | undefined {
-    return Object.values(this.room.players).find((p) => p.odersId === connId);
+    return Object.values(this.room.players).find(
+      (p) => p.odersId === connId || p.id === connId
+    );
   }
 
   findConnById(connId: string): Party.Connection | undefined {

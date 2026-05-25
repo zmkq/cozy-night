@@ -3,6 +3,10 @@ import LobbyClientPage from './LobbyClientPage';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { StickerCard } from '@/components/christmas/StickerCard';
+import { getIronSession } from 'iron-session';
+import { cookies } from 'next/headers';
+import { sessionOptions, SessionData, getRoomSession } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 
 export default async function RoomLobbyPage({
   params,
@@ -11,7 +15,18 @@ export default async function RoomLobbyPage({
 }) {
   const { roomCode } = await params;
   const upperCode = roomCode.toUpperCase();
+  
+  const session = await getIronSession<SessionData>(
+    await cookies(),
+    sessionOptions
+  );
+  const roomSession = getRoomSession(session, upperCode);
+  if (roomSession.isLoggedIn && roomSession.user) {
+    redirect(`/${upperCode}/home`);
+  }
+
   const users = await getAllUsers(upperCode);
+
 
   if (users.length === 0) {
     return (

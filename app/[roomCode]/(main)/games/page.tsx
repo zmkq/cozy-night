@@ -137,14 +137,14 @@ export default function GamesLobby() {
         {GAMES.map((game, i) => (
           <section
             key={game.id}
-            className="h-full w-full shrink-0 flex items-center justify-center snap-center px-4 py-20 lg:p-12">
+            className="h-full w-full shrink-0 flex items-start lg:items-center justify-center snap-center px-4 py-16 lg:p-12 overflow-y-auto min-h-0">
             <GamePoster game={game} isActive={activeIndex === i} roomCode={roomCode} />
           </section>
         ))}
       </div>
       
       {/* Carousel Navigation UI */}
-      <div className="fixed bottom-10 inset-x-0 z-50 flex flex-col items-center gap-6 pointer-events-none">
+      <div className="fixed bottom-4 lg:bottom-10 inset-x-0 z-50 flex flex-col items-center gap-3 lg:gap-6 pointer-events-none">
         <div className="flex gap-2.5 pointer-events-auto bg-white/5 backdrop-blur-xl p-2 rounded-full border border-white/10">
           {GAMES.map((_, i) => (
             <button
@@ -197,14 +197,14 @@ function GamePoster({ game, isActive, roomCode }: any) {
       animate={
         isActive ? { scale: 1, opacity: 1 } : { scale: 0.9, opacity: 0.3 }
       }
-      className="relative w-full max-w-6xl h-full flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-20 z-10">
+      className="relative w-full max-w-6xl min-h-0 lg:h-full flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-20 z-10 py-6">
       {/* 1. Cartoonish Sticker Card (Poster) */}
-      <div className="w-full max-w-[320px] lg:max-w-none lg:w-[400px] shrink-0">
+      <div className="w-full max-w-[150px] sm:max-w-[220px] lg:max-w-none lg:w-[400px] shrink-0">
         <Link href={`/${roomCode}/games/${game.id}`} className="block group relative">
           {/* Sticker Background / Shadow */}
           <div className="absolute inset-0 bg-white/10 rounded-4xl translate-x-3 translate-y-3 group-hover:translate-x-4 group-hover:translate-y-4 transition-transform duration-500 blur-2xl" />
 
-          <div className="relative aspect-3/4 rounded-4xl bg-[#151515] border-[6px] border-white overflow-hidden shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] transition-all duration-500 group-hover:scale-105 group-hover:-rotate-1 group-hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.8)]">
+          <div className="relative aspect-3/4 rounded-3xl lg:rounded-4xl bg-[#151515] border-4 lg:border-[6px] border-white overflow-hidden shadow-[0_15px_30px_-12px_rgba(0,0,0,0.5)] transition-all duration-500 group-hover:scale-105 group-hover:-rotate-1 group-hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.8)]">
             {/* Visual Content */}
             <div
               className={cn(
@@ -214,7 +214,7 @@ function GamePoster({ game, isActive, roomCode }: any) {
             />
             <div className="absolute inset-0 bg-black/10 backdrop-blur-[2px] group-hover:backdrop-blur-none transition-all duration-500" />
 
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center sm:p-12">
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-4 lg:p-8 text-center sm:p-12">
               <motion.div
                 animate={isActive ? { y: [0, -12, 0], rotate: [0, 2, 0] } : {}}
                 transition={{
@@ -222,33 +222,33 @@ function GamePoster({ game, isActive, roomCode }: any) {
                   repeat: Infinity,
                   ease: 'easeInOut',
                 }}
-                className="w-24 h-24 lg:w-36 lg:h-36 rounded-4xl bg-white border-4 border-black/5 flex items-center justify-center shadow-2xl relative"
+                className="w-14 h-14 sm:w-20 sm:h-20 lg:w-36 lg:h-36 rounded-2xl lg:rounded-4xl bg-white border-2 lg:border-4 border-black/5 flex items-center justify-center shadow-2xl relative"
                 style={{ color: game.color }}>
-                <div className="text-5xl lg:text-7xl group-hover:scale-110 transition-transform duration-500">
+                <div className="text-3xl sm:text-5xl lg:text-7xl group-hover:scale-110 transition-transform duration-500">
                   {game.emoji}
                 </div>
               </motion.div>
 
-              <div className="mt-8 space-y-2">
-                <h2 className="text-4xl lg:text-5xl font-black text-white uppercase tracking-tighter leading-tight drop-shadow-lg">
+              <div className="mt-4 sm:mt-8 space-y-1 sm:space-y-2">
+                <h2 className="text-xl sm:text-3xl lg:text-5xl font-black text-white uppercase tracking-tighter leading-tight drop-shadow-lg">
                   {game.name}
                 </h2>
-                <div className="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-lg text-xs font-black uppercase tracking-widest text-white border border-white/20">
+                <div className="inline-block px-2 py-0.5 sm:px-3 sm:py-1 bg-white/20 backdrop-blur-md rounded-lg text-[9px] sm:text-xs font-black uppercase tracking-widest text-white border border-white/20">
                   {game.tagline}
                 </div>
               </div>
             </div>
 
             {/* Top Badge */}
-            <div className="absolute top-6 left-6 flex gap-2">
+            <div className="absolute top-3 left-3 sm:top-6 sm:left-6 flex gap-1 sm:gap-2">
               {game.isNew && (
-                <div className="bg-[#FFD93D] text-black text-[9px] font-black px-3 py-1 rounded-lg border-2 border-black rotate-[-5deg] shadow-lg">
+                <div className="bg-[#FFD93D] text-black text-[7px] sm:text-[9px] font-black px-1.5 py-0.5 sm:px-3 sm:py-1 rounded-lg border border-black rotate-[-5deg] shadow-lg">
                   NEW
                 </div>
               )}
               {game.isFlagship && (
-                <div className="bg-white text-black text-[9px] font-black px-3 py-1 rounded-lg border-2 border-black rotate-[5deg] shadow-lg flex items-center gap-1">
-                  <Star size={10} fill="currentColor" />
+                <div className="bg-white text-black text-[7px] sm:text-[9px] font-black px-1.5 py-0.5 sm:px-3 sm:py-1 rounded-lg border border-black rotate-[5deg] shadow-lg flex items-center gap-1">
+                  <Star size={8} className="sm:w-2.5 sm:h-2.5" fill="currentColor" />
                   PREMIUM
                 </div>
               )}
@@ -258,17 +258,17 @@ function GamePoster({ game, isActive, roomCode }: any) {
       </div>
 
       {/* 2. Info Section (Responsive) */}
-      <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left max-w-md lg:max-w-none space-y-6 lg:space-y-10">
+      <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left max-w-md lg:max-w-none space-y-3 sm:space-y-6 lg:space-y-10 px-4">
         <motion.div
           animate={isActive ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-          className="space-y-3">
-          <div className="flex items-center justify-center lg:justify-start gap-3">
+          className="space-y-1 sm:space-y-3">
+          <div className="hidden lg:flex items-center justify-center lg:justify-start gap-3">
             <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.5em]">
               Description
             </span>
             <div className="h-0.5 w-10 bg-white/10" />
           </div>
-          <p className="text-xl lg:text-3xl font-bold text-white leading-snug lg:leading-tight">
+          <p className="text-sm sm:text-lg lg:text-3xl font-bold text-white leading-snug lg:leading-tight">
             {game.desc}
           </p>
         </motion.div>
@@ -277,21 +277,21 @@ function GamePoster({ game, isActive, roomCode }: any) {
         <motion.div
           animate={isActive ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
           transition={{ delay: 0.1 }}
-          className="flex flex-wrap justify-center lg:justify-start gap-3 lg:gap-5">
+          className="flex flex-wrap justify-center lg:justify-start gap-2 sm:gap-3 lg:gap-5">
           <CompactStat
-            icon={<Star size={14} />}
+            icon={<Star size={12} className="sm:w-3.5 sm:h-3.5" />}
             label="Difficulty"
             value={game.difficulty}
             color={game.color}
           />
           <CompactStat
-            icon={<Clock size={14} />}
+            icon={<Clock size={12} className="sm:w-3.5 sm:h-3.5" />}
             label="Duration"
             value={game.duration}
             color={game.color}
           />
           <CompactStat
-            icon={<Trophy size={14} />}
+            icon={<Trophy size={12} className="sm:w-3.5 sm:h-3.5" />}
             label="Points"
             value={game.points}
             color={game.color}
@@ -304,10 +304,10 @@ function GamePoster({ game, isActive, roomCode }: any) {
             isActive ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }
           }
           transition={{ delay: 0.2 }}
-          className="w-full lg:w-auto flex justify-center lg:justify-start">
+          className="w-full lg:w-auto flex justify-center lg:justify-start pt-2">
           <Link href={`/${roomCode}/games/${game.id}`}>
-            <CartoonButton variant="gold" className="px-12 h-16 text-lg">
-              <PlayCircle size={22} />
+            <CartoonButton variant="gold" className="px-8 py-2 sm:px-12 sm:h-16 text-xs sm:text-lg">
+              <PlayCircle size={18} className="sm:w-[22px] sm:h-[22px]" />
               Play Now
             </CartoonButton>
           </Link>
@@ -319,15 +319,15 @@ function GamePoster({ game, isActive, roomCode }: any) {
 
 function CompactStat({ icon, label, value, color }: any) {
   return (
-    <div className="flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-2.5 rounded-2xl group hover:border-white/20 transition-all">
+    <div className="flex items-center gap-2 sm:gap-3 bg-white/5 border border-white/10 px-2.5 py-1.5 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl group hover:border-white/20 transition-all">
       <div className="flex flex-col items-center lg:items-start">
-        <span className="text-[8px] font-black text-white/20 uppercase tracking-widest">
+        <span className="text-[7px] sm:text-[8px] font-black text-white/20 uppercase tracking-widest">
           {label}
         </span>
-        <span className="text-sm font-black text-white">{value}</span>
+        <span className="text-xs sm:text-sm font-black text-white">{value}</span>
       </div>
       <div
-        className="w-8 h-8 rounded-xl flex items-center justify-center shadow-lg"
+        className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg text-xs sm:text-sm"
         style={{ backgroundColor: color + '20', color }}>
         {icon}
       </div>

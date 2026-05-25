@@ -38,6 +38,7 @@ export default function HeistGame() {
     submitAnswer,
     countdown,
     setReady,
+    forceAdvance,
   } = usePartyContext();
 
   const heist = state.heistState;
@@ -69,7 +70,7 @@ export default function HeistGame() {
   };
   const sendAdminForceNext = () => {
     if (confirm('FORCE NEXT PHASE? This will auto-complete voting/execution.')) {
-      submitAnswer({ type: 'admin-force-next' });
+      forceAdvance();
     }
   };
 

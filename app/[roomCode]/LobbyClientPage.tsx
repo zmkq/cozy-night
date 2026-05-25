@@ -23,7 +23,7 @@ export default function LobbyClientPage({ roomCode, initialUsers }: LobbyClientP
   const router = useRouter();
   const { toast } = useToast();
   const [users, setUsers] = useState<User[]>(initialUsers);
-  const [activeForm, setActiveForm] = useState<'select' | 'new'>('select');
+  const [activeForm, setActiveForm] = useState<'select' | 'new'>('new');
 
   // New Player Form State
   const [playerName, setPlayerName] = useState('');
