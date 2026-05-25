@@ -1,4 +1,4 @@
-# 🎮 Cozy Night (CozyNight.io)
+# 🎮 Cozy Night (cozynight.itsmo.xyz)
 ### *A Real-Time, Open-Source Multiplayer Party Game Platform*
 
 [![Next.js 16](https://img.shields.io/badge/Next.js-16%20%28React%2019%29-black?logo=next.js&style=flat-square)](https://nextjs.org/)
