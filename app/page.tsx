@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CartoonButton } from '@/components/christmas/CartoonButton';
 import { StickerCard } from '@/components/christmas/StickerCard';
 import { FloatingProps } from '@/components/christmas/FloatingProps';
-import { Sparkles, Gamepad2, ArrowRight, Plus } from 'lucide-react';
-import { createRoomAction } from '@/app/actions';
+import { Sparkles, Gamepad2, ArrowRight, Plus, Globe, Users, RefreshCw, Loader2 } from 'lucide-react';
+import { createRoomAction, listPublicRoomsAction } from '@/app/actions';
 import { useToast } from '@/components/ui/use-toast';
 
 const AVATARS = ['🎅', '🤶', '🧝', '🦌', '⛄', '🎁', '🎄', '🍪', '🔥', '🧦', '🧸', '🔔'];
@@ -15,7 +15,7 @@ const AVATARS = ['🎅', '🤶', '🧝', '🦌', '⛄', '🎁', '🎄', '🍪', 
 export default function GlobalLandingPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState<'create' | 'join'>('create');
+  const [activeTab, setActiveTab] = useState<'create' | 'join' | 'browse'>('create');
   
   // Create Room State
   const [hostName, setHostName] = useState('');
@@ -24,6 +24,26 @@ export default function GlobalLandingPage() {
   
   // Join Room State
   const [roomCode, setRoomCode] = useState('');
+
+  // Browse State
+  const [publicRooms, setPublicRooms] = useState<any[]>([]);
+  const [loadingRooms, setLoadingRooms] = useState(false);
+
+  const fetchPublicRooms = useCallback(async () => {
+    setLoadingRooms(true);
+    try {
+      const result = await listPublicRoomsAction();
+      setPublicRooms(result.rooms || []);
+    } finally {
+      setLoadingRooms(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (activeTab === 'browse') {
+      fetchPublicRooms();
+    }
+  }, [activeTab, fetchPublicRooms]);
 
   const handleCreateRoom = async () => {
     if (!hostName.trim()) {
@@ -109,7 +129,7 @@ export default function GlobalLandingPage() {
                 ? 'bg-[#FFD93D] text-black shadow-md' 
                 : 'text-white/50 hover:text-white'
             }`}>
-            Host Room
+            Host
           </button>
           <button
             onClick={() => setActiveTab('join')}
@@ -118,7 +138,16 @@ export default function GlobalLandingPage() {
                 ? 'bg-[#FFD93D] text-black shadow-md' 
                 : 'text-white/50 hover:text-white'
             }`}>
-            Join Room
+            Join
+          </button>
+          <button
+            onClick={() => setActiveTab('browse')}
+            className={`flex-1 py-3 text-sm font-black uppercase tracking-wider rounded-xl transition-all duration-300 ${
+              activeTab === 'browse' 
+                ? 'bg-[#FFD93D] text-black shadow-md' 
+                : 'text-white/50 hover:text-white'
+            }`}>
+            Browse
           </button>
         </div>
 
@@ -184,7 +213,7 @@ export default function GlobalLandingPage() {
                 </div>
               </StickerCard>
             </motion.div>
-          ) : (
+          ) : activeTab === 'join' ? (
             <motion.div
               key="join-card"
               initial={{ opacity: 0, x: 30, rotateY: -15 }}
@@ -222,11 +251,75 @@ export default function GlobalLandingPage() {
                 </div>
               </StickerCard>
             </motion.div>
+          ) : (
+            <motion.div
+              key="browse-card"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.25 }}
+              className="w-full">
+              <StickerCard className="p-6 text-left" accentColor="purple">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xl font-black text-white flex items-center gap-2">
+                    <Globe size={20} className="text-purple-400" /> Public Rooms
+                  </h3>
+                  <button
+                    onClick={fetchPublicRooms}
+                    disabled={loadingRooms}
+                    className="p-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all">
+                    {loadingRooms ? (
+                      <Loader2 size={16} className="text-white/50 animate-spin" />
+                    ) : (
+                      <RefreshCw size={16} className="text-white/50" />
+                    )}
+                  </button>
+                </div>
+
+                {loadingRooms ? (
+                  <div className="text-center py-10">
+                    <Loader2 size={32} className="text-purple-400 animate-spin mx-auto mb-3" />
+                    <p className="text-white/40 text-sm font-bold">Scanning for rooms...</p>
+                  </div>
+                ) : publicRooms.length === 0 ? (
+                  <div className="text-center py-10">
+                    <div className="text-4xl mb-3">🌐</div>
+                    <p className="text-white/40 text-sm font-bold uppercase tracking-wide">No public rooms right now</p>
+                    <p className="text-white/20 text-xs mt-1">Host a room and make it public from the Admin Panel!</p>
+                  </div>
+                ) : (
+                  <div className="space-y-2 max-h-72 overflow-y-auto">
+                    {publicRooms.map((room) => (
+                      <motion.div
+                        key={room.roomCode}
+                        layout
+                        className="flex items-center gap-3 p-3 bg-white/5 border border-white/5 hover:bg-white/10 hover:border-purple-500/30 rounded-2xl transition-all group cursor-pointer"
+                        onClick={() => router.push(`/${room.roomCode}`)}>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className="text-white font-black text-sm truncate">{room.name}</span>
+                            {room.isPlaying && (
+                              <span className="px-1.5 py-0.5 bg-green-500/20 border border-green-500/30 text-green-400 text-[9px] font-black uppercase rounded-full animate-pulse shrink-0">LIVE</span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <Users size={10} className="text-white/30" />
+                            <span className="text-white/30 text-[10px] font-bold">{room.playerCount} players</span>
+                            <span className="text-white/20 text-[10px]">• {room.roomCode}</span>
+                          </div>
+                        </div>
+                        <ArrowRight size={16} className="text-purple-400 opacity-0 group-hover:opacity-100 transition-all shrink-0" />
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+              </StickerCard>
+            </motion.div>
           )}
         </AnimatePresence>
 
         <p className="text-white/20 text-xs font-bold font-mono">
-          Cozy Night Platform © 2026. Free & Open Source.
+          Cozy Night Platform © 2026. Free &amp; Open Source.
         </p>
       </div>
     </div>

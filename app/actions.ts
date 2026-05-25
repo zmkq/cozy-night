@@ -399,3 +399,54 @@ export async function getPromptsAction(roomCode: string) {
     return { error: 'Failed to fetch prompts.' };
   }
 }
+
+export async function listPublicRoomsAction() {
+  try {
+    const { listPublicRooms } = await import('@/lib/db');
+    const rooms = await listPublicRooms();
+    return { rooms };
+  } catch (err: any) {
+    console.error('List Public Rooms Error:', err);
+    return { rooms: [] };
+  }
+}
+
+export async function setRoomPublicAction(
+  roomCode: string,
+  isPublic: boolean,
+  roomName?: string,
+  hostName?: string,
+  playerCount?: number
+) {
+  try {
+    const cookieStore = await cookies();
+    const session = await getIronSession<SessionData>(cookieStore, sessionOptions);
+    const roomSession = getRoomSession(session, roomCode);
+
+    if (!roomSession.isLoggedIn || !roomSession.user?.isAdmin) {
+      return { error: 'Unauthorized' };
+    }
+
+    if (isPublic) {
+      const { registerPublicRoom } = await import('@/lib/db');
+      await registerPublicRoom({
+        roomCode,
+        name: roomName || `${hostName || 'Unknown'}'s Room`,
+        hostName: hostName || roomSession.user.name,
+        playerCount: playerCount || 1,
+        isPlaying: false,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+      });
+    } else {
+      const { unregisterPublicRoom } = await import('@/lib/db');
+      await unregisterPublicRoom(roomCode);
+    }
+
+    return { success: true };
+  } catch (err: any) {
+    console.error('Set Room Public Error:', err);
+    return { error: 'Failed to update public status.' };
+  }
+}
+

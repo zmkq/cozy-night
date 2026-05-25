@@ -19,6 +19,7 @@ import {
   Plus,
   Settings,
   Flame,
+  Globe,
 } from 'lucide-react';
 import {
   toggleSiteOpenAction,
@@ -28,6 +29,7 @@ import {
   getAdminStatsAction,
   getPromptsAction,
   savePromptsAction,
+  setRoomPublicAction,
 } from '@/app/actions';
 import { useToast } from '@/components/ui/use-toast';
 import { cn } from '@/lib/utils';
@@ -60,6 +62,7 @@ export function AdminControls({ isOpen, onToggle, roomCode }: AdminControlsProps
   const [loading, setLoading] = useState<string | null>(null);
   const [expanded, setExpanded] = useState(false);
   const [stats, setStats] = useState<AdminStats | null>(null);
+  const [isPublic, setIsPublic] = useState(false);
   const { toast } = useToast();
   const { forceAdvance, startWrapped, triggerAdminEvent, kickPlayer, players, myPlayer } = usePartyContext();
 
@@ -534,6 +537,55 @@ export function AdminControls({ isOpen, onToggle, roomCode }: AdminControlsProps
                           </span>
                         </div>
                       </div>
+                    </button>
+
+                    {/* Make Room Public Toggle */}
+                    <button
+                      onClick={async () => {
+                        const newPublic = !isPublic;
+                        setLoading('public');
+                        const res = await setRoomPublicAction(
+                          roomCode,
+                          newPublic,
+                          undefined,
+                          myPlayer?.name,
+                          players.length
+                        );
+                        setLoading(null);
+                        if (res?.success) {
+                          setIsPublic(newPublic);
+                          toast({
+                            title: newPublic ? '🌐 Room Listed!' : '🔒 Room Hidden',
+                            description: newPublic
+                              ? 'Your room is now visible in the Browse directory.'
+                              : 'Your room is no longer listed publicly.',
+                          });
+                        }
+                      }}
+                      disabled={loading !== null}
+                      className={`w-full flex items-center justify-between p-3 rounded-xl border-2 transition-all mt-2 ${
+                        isPublic
+                          ? 'bg-blue-500/10 border-blue-500/30 hover:border-blue-500'
+                          : 'bg-white/5 border-white/10 hover:border-white/20'
+                      }`}>
+                      <div className="flex items-center gap-3">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                          isPublic ? 'bg-blue-500' : 'bg-white/10'
+                        }`}>
+                          <Globe size={16} className="text-white" />
+                        </div>
+                        <div className="text-left">
+                          <span className="text-white text-sm font-bold block">
+                            {isPublic ? 'Listed Publicly' : 'Make Public'}
+                          </span>
+                          <span className="text-[10px] text-white/50 block">
+                            {isPublic ? 'Visible in room browser' : 'Add to global room directory'}
+                          </span>
+                        </div>
+                      </div>
+                      {loading === 'public' && (
+                        <Loader2 size={16} className="animate-spin text-white/50" />
+                      )}
                     </button>
 
                     <button

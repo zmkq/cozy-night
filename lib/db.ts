@@ -267,3 +267,39 @@ export async function saveRoomPrompts(roomCode: string, prompts: any) {
   const keys = getKeys(roomCode);
   await kv.set(keys.prompts, prompts);
 }
+
+// --- Public Room Registry ---
+
+export interface PublicRoomEntry {
+  roomCode: string;
+  name: string;
+  hostName: string;
+  playerCount: number;
+  isPlaying: boolean;
+  createdAt: number;
+  updatedAt: number;
+}
+
+const PUBLIC_ROOMS_KEY = 'global:public-rooms';
+
+export async function registerPublicRoom(entry: PublicRoomEntry) {
+  const rooms = (await kv.get<Record<string, PublicRoomEntry>>(PUBLIC_ROOMS_KEY)) || {};
+  rooms[entry.roomCode] = { ...entry, updatedAt: Date.now() };
+  await kv.set(PUBLIC_ROOMS_KEY, rooms);
+}
+
+export async function unregisterPublicRoom(roomCode: string) {
+  const rooms = (await kv.get<Record<string, PublicRoomEntry>>(PUBLIC_ROOMS_KEY)) || {};
+  delete rooms[roomCode];
+  await kv.set(PUBLIC_ROOMS_KEY, rooms);
+}
+
+export async function listPublicRooms(): Promise<PublicRoomEntry[]> {
+  const rooms = (await kv.get<Record<string, PublicRoomEntry>>(PUBLIC_ROOMS_KEY)) || {};
+  // Filter out stale rooms (not updated in 2 hours)
+  const twoHoursAgo = Date.now() - 2 * 60 * 60 * 1000;
+  return Object.values(rooms)
+    .filter((r) => r.updatedAt > twoHoursAgo)
+    .sort((a, b) => b.updatedAt - a.updatedAt);
+}
+
