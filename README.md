@@ -23,51 +23,55 @@ Built with a **Neobrutalistic & Glassmorphic UI**, Cozy Night combines visual ex
 ---
 
 ## 🕹️ The Games
-Cozy Night hosts a custom suite of high-engagement party games, each engineered around unique group dynamics:
+Cozy Night hosts a custom suite of high-engagement party games, each engineered around unique group dynamics and premium visuals:
 
-### 🕵️‍♂️ Heist (*Social Deduction & Trust*)
-*   **The Concept**: A high-stakes social deduction challenge. Players are secretly assigned roles: **Crew Members** (loyal operatives) or **Snitches** (traitors).
+### 🕵️‍♂️ Heist (*Cyberpunk Mainframe Wiring*)
+*   **The Concept**: A high-stakes social deduction heist. Operatives must override the mainframe security systems while sniffing out the traitors in their squad.
 *   **How it plays**:
-    1.  The Leader selects a subset of players for a mission.
-    2.  The room votes to approve or reject the selected lineup.
-    3.  If approved, chosen operatives privately commit to the heist: Crew members click **Commit**, Snitches can choose to **Sabotage**.
-    4.  Missions affect global gauges: **Success Meter** and **Heat Meter**.
-    5.  The game culminates in a tense **Accusation Phase** where players must identify and vote to execute the Snitches before the Snitches reach their heat threshold.
+    1.  Operatives must solve real-time **Wiring Micro-Games** by clicking matching wire colors to override the mainframe before the security timer expires.
+    2.  The **Snitch** can privately sabotage missions, trigger active traps on player screens, and increase the room's Heat level.
+    3.  Operatives must collaborate, deduce who is hindering progress, and vote them out before the server alarms trigger.
 
-### ⚖️ Squad Trial (*Chaos & Humorous Judgment*)
-*   **The Concept**: A courtroom simulator where players stand trial for lighthearted, customizable roasts.
+### ⚖️ Squad Trial (*Ace Attorney Courtroom Simulator*)
+*   **The Concept**: A fast-paced, high-drama courtroom simulator where players stand trial for humorous, customizable roasts.
 *   **How it plays**:
-    1.  Every round, a player is randomly chosen as the **Accused** under a specific charge (e.g., *"Leaving dirty dishes right next to the empty dishwasher"*).
-    2.  Other players act as **Jurors** and must submit anonymous **Evidence** (humorous, roasting claims about the accused).
-    3.  The Accused is given a timed window to write and submit a **Defense**.
-    4.  Random **Plot Twists** are introduced (e.g., *Double Jeopardy* doubling points, *Diplomatic Immunity* protecting the accused, or *Switcheroo* swapping the accused with a juror).
-    5.  Jurors vote **Guilty** or **Not Guilty** to distribute points.
+    1.  The **Accused** stands trial under a specific, customizable charge (e.g., *"Leaving dirty dishes right next to the empty dishwasher"*).
+    2.  **Jurors** inspect evidence cards from a physical ledger docket (such as burrito receipts, phone logs, or incognito browser history) and slam the **Objection!** button to present roasts.
+    3.  Features **Gavel Slams**, comic speed-lines, timed defense rebuttals, and final sentencing verdict stamps.
 
-### 🕵️‍♀️ Saboteur (*Association & Deduction*)
-*   **The Concept**: A word-association game with an imposter trying to blend in.
+### 🕵️‍♀️ Saboteur (*Chameleon Word Grid*)
+*   **The Concept**: A coordinate-based grid association and deduction game.
 *   **How it plays**:
-    1.  Most players receive a specific prompt/question.
-    2.  One player is secretly chosen as the **Saboteur** and receives a modified, vague prompt.
-    3.  Everyone submits their answers. The Saboteur must read the room and submit a blending answer to avoid exposure.
-    4.  Players discuss and vote on who the Saboteur is.
+    1.  Players are presented with a 4x4 coordinate word grid (the **Chameleon Grid**). Honest players are given the exact target cell coordinates.
+    2.  The **Saboteur** is blind to the target word but must blend in by writing a related clue.
+    3.  If players identify and vote out the Saboteur, the Saboteur gets a **last-second clutch Escape guess** to identify the correct target word from the grid and steal the win.
 
-### ⚡ Rapid Fire (*High-Speed Trivia*)
-*   **The Concept**: A speed-based trivia battle.
+### ⚡ Rapid Fire (*WarioWare Micro-Games*)
+*   **The Concept**: A fast-paced, chaotic sequence of mini-challenges that test reflexes, speed, and accuracy.
 *   **How it plays**:
-    1.  Players are presented with multiple-choice questions.
-    2.  Points are rewarded based on correctness *and* speed.
-    3.  A live leaderboard dynamically shifts after each question.
+    1.  Players must complete a sequence of 5 frantic micro-challenges (tapping target Santas, matching range sliders, avoiding active clicking zones, reverse spelling, and shaking clicking boxes).
+    2.  Neon-lit progress tracks show real-time avatar race progress, and points scale dynamically based on milliseconds remaining.
 
-### 👑 Shotcaller (*Tactical Scoring Events*)
-*   **The Concept**: A turn-based strategy game using action cards to steal points, swap scores, or protect allies.
+### 👑 Shotcaller (*Tactical Scoring & Chaos Cards*)
+*   **The Concept**: A turn-based strategy game using god-mode card hands to steal points, swap scores, or protect allies.
 *   **How it plays**:
-    1.  One player becomes the **Shotcaller** and draws action cards (e.g., *Tax Collector*, *Russian Roulette*, *Alliance*, *Reverse Card*).
-    2.  They choose targets and execute events that swing the leaderboard.
-    3.  Players can defend themselves using acquired item tokens (like *Shields*).
+    1.  The **Shotcaller** draws **Chaos Cards** (Tax Collector, Alliance, Reverse) from a floating 3D-like hand interface.
+    2.  Using animated target reticles and crosshairs, they select targets to execute swing events.
+    3.  Targets can actively counter attacks by spending acquired skill tokens (like Shields) to trigger block animations.
 
-### 👆 Most Likely To & 💬 Lie Rate
-*   **Most Likely To**: Classic voting game pointing out who is most likely to commit a specific blunder.
-*   **Lie Rate**: Guessing game where players predict how many people in the room have done a specific embarrassing act.
+### 👆 Most Likely To (*Roast & Betting Slip Arena*)
+*   **The Concept**: Anonymous roasts combined with point-multiplier betting slips.
+*   **How it plays**:
+    1.  Players type custom anonymous roasts targeted at specific room members.
+    2.  Before votes are revealed, players fill out a betting slip predicting which candidate will win the majority.
+    3.  A grid of roasting bubbles is presented, highlighting the funniest and most savage comments.
+
+### 💬 Lie Rate (*Polygraph Heart-Rate Showdown*)
+*   **The Concept**: Confession interrogation coupled with biometric telemetry bidding.
+*   **How it plays**:
+    1.  The Hot Seat player answers confessions on a virtual lie detector terminal.
+    2.  Other players analyze a pulsing SVG EKG heart-rate graph representing biometric data.
+    3.  Analysts place point bids on whether the statement is a **Fact** or a **Fabrication** before a giant verdict stamp seals the result.
 
 ---
 
