@@ -109,6 +109,18 @@ export default function LieRateGame() {
     setGuesses({});
   }, [state.round]);
 
+  // Heartbeat haptics during confession reading
+  useEffect(() => {
+    if (isPlaying && !hasAnswered) {
+      const interval = setInterval(() => {
+        if (typeof navigator !== 'undefined' && navigator.vibrate) {
+          navigator.vibrate([80, 120, 80]); // double pulse heartbeat
+        }
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [isPlaying, hasAnswered]);
+
   // Celebration for bluffs
   useEffect(() => {
     if (

@@ -147,6 +147,15 @@ export default function GroupTrialGame() {
         roundData?.eventMessage?.includes('GUILTY') &&
         !roundData?.eventMessage?.includes('NOT GUILTY');
 
+      // Haptic feedback on verdict reveal
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        if (isGuilty) {
+          navigator.vibrate([50, 30, 50, 30, 400, 100, 600]); // dramatic guilty gavel slam
+        } else {
+          navigator.vibrate([100, 50, 100]); // relief pulse for innocent
+        }
+      }
+
       if (isGuilty) {
         triggerCaught(accused.name);
       } else {

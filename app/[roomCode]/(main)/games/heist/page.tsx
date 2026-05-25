@@ -52,6 +52,9 @@ export default function HeistGame() {
     submitAnswer({ type: 'heist-vote', vote: voteVal });
   };
   const sendHeistAction = (action: 'commit' | 'sabotage') => {
+    if (action === 'sabotage' && typeof navigator !== 'undefined' && navigator.vibrate) {
+      navigator.vibrate([100, 50, 200, 50, 300]); // escalating betrayal buzz
+    }
     submitAnswer({ type: 'heist-action', action });
   };
   const sendHeistAccusation = (targetId: string) => {
