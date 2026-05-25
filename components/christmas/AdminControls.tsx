@@ -52,7 +52,7 @@ interface AdminStats {
   };
 }
 
-type ActiveTab = 'controls' | 'prompts';
+type ActiveTab = 'controls' | 'prompts' | 'players';
 type PromptGameType = 'saboteur' | 'mostLikely' | 'lieRate' | 'trials';
 
 export function AdminControls({ isOpen, onToggle, roomCode }: AdminControlsProps) {
@@ -61,7 +61,7 @@ export function AdminControls({ isOpen, onToggle, roomCode }: AdminControlsProps
   const [expanded, setExpanded] = useState(false);
   const [stats, setStats] = useState<AdminStats | null>(null);
   const { toast } = useToast();
-  const { forceAdvance, startWrapped, triggerAdminEvent } = usePartyContext();
+  const { forceAdvance, startWrapped, triggerAdminEvent, kickPlayer, players, myPlayer } = usePartyContext();
 
   // Prompt Editor State
   const [promptGame, setPromptGame] = useState<PromptGameType>('saboteur');
@@ -380,11 +380,18 @@ export function AdminControls({ isOpen, onToggle, roomCode }: AdminControlsProps
                   Quick Actions
                 </button>
                 <button
+                  onClick={() => setActiveTab('players')}
+                  className={`flex-1 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all ${
+                    activeTab === 'players' ? 'bg-purple-600 text-white' : 'text-white/60 hover:text-white'
+                  }`}>
+                  Players
+                </button>
+                <button
                   onClick={() => setActiveTab('prompts')}
                   className={`flex-1 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-all ${
                     activeTab === 'prompts' ? 'bg-purple-600 text-white' : 'text-white/60 hover:text-white'
                   }`}>
-                  Prompt Editor
+                  Prompts
                 </button>
               </div>
 
@@ -586,6 +593,49 @@ export function AdminControls({ isOpen, onToggle, roomCode }: AdminControlsProps
                   </div>
                   <p className="text-[10px] text-white/30 text-center">
                     ⚠️ Warning: All actions are destructive. Use with caution.
+                  </p>
+                </div>
+              ) : activeTab === 'players' ? (
+                /* PLAYERS / KICK PANEL */
+                <div className="px-4 pb-4 pt-4 space-y-2">
+                  <p className="text-[10px] text-white/40 uppercase tracking-widest font-bold mb-3">Connected Players ({players.length})</p>
+                  {players.length === 0 && (
+                    <p className="text-center text-white/30 text-xs py-6">No players connected.</p>
+                  )}
+                  {players.map((p) => (
+                    <div
+                      key={p.id}
+                      className="flex items-center gap-3 p-3 bg-white/5 rounded-xl border border-white/5 hover:bg-white/10 transition-all">
+                      <div className="w-8 h-8 rounded-full border border-white/20 overflow-hidden bg-white/10 flex items-center justify-center shrink-0">
+                        {p.avatar && p.avatar.startsWith('http') ? (
+                          <img src={p.avatar} className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="text-sm">{p.avatar || '👤'}</span>
+                        )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <span className="text-white font-bold text-sm block truncate">{p.name}</span>
+                        {p.id === myPlayer?.id && (
+                          <span className="text-[9px] text-purple-400 font-black uppercase">You (Host)</span>
+                        )}
+                      </div>
+                      {p.id !== myPlayer?.id && (
+                        <button
+                          onClick={() => {
+                            if (confirm(`Kick ${p.name} from the room?`)) {
+                              kickPlayer(p.id);
+                              toast({ title: `🥾 ${p.name} kicked`, description: 'Player removed from room.' });
+                            }
+                          }}
+                          className="p-2 rounded-xl bg-red-500/10 border border-red-500/20 hover:bg-red-500/30 hover:border-red-500 transition-all group"
+                          title={`Kick ${p.name}`}>
+                          <Trash2 size={14} className="text-red-400 group-hover:text-red-300" />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  <p className="text-[10px] text-white/30 text-center mt-4">
+                    ⚠️ Kicked players are immediately removed.
                   </p>
                 </div>
               ) : (

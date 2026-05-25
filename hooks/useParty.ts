@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import usePartySocket from 'partysocket/react';
 
 // Types matching server
@@ -214,6 +215,7 @@ export function useParty({
   const [roleData, setRoleData] = useState<unknown>(null);
   const [countdown, setCountdown] = useState(0);
   const hasJoined = useRef(false);
+  const router = useRouter();
 
   const socket = usePartySocket({
     host: PARTYKIT_HOST,
@@ -277,6 +279,10 @@ export function useParty({
                 new CustomEvent('cozy-emoji-blast', { detail: msg })
               );
             }
+            break;
+          case 'kicked':
+            alert(msg.reason || 'You were removed from the room.');
+            router.push('/');
             break;
         }
       } catch (e) {
@@ -399,6 +405,16 @@ export function useParty({
     [socket]
   );
 
+  // Kick player (Host only)
+  const kickPlayer = useCallback(
+    (targetId: string) => {
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({ type: 'host-kick', targetId }));
+      }
+    },
+    [socket]
+  );
+
   // Get online players - with safety checks
   const players = state?.players
     ? Object.values(state.players).filter((p) => p.connected !== false)
@@ -447,5 +463,6 @@ export function useParty({
     startWrapped,
     triggerAdminEvent,
     sendReaction,
+    kickPlayer,
   };
 }

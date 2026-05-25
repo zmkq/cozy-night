@@ -228,7 +228,8 @@ type ClientMessage =
   | { type: 'heist-start-accusation' }
   | { type: 'saboteur-guess'; word: string }
   | { type: 'admin-end-game' }
-  | { type: 'reaction'; emoji: string };
+  | { type: 'reaction'; emoji: string }
+  | { type: 'host-kick'; targetId: string };
 
 // ============ PROMPTS ============
 const SABOTEUR_PROMPTS = config.saboteurPrompts;
@@ -508,13 +509,19 @@ export default class CozyGameServer implements Party.Server {
         case 'reaction':
           this.handleReaction(sender.id, msg.emoji);
           break;
+        case 'host-kick':
+          this.handleHostKick(sender.id, msg.targetId);
+          break;
       }
     } catch (e) {
       log('Message parse error', { error: (e as Error).message });
     }
   }
 
-  handleStartWrapped(senderId: string) {
+  handleStartWrapped(connId: string) {
+    const player = this.findPlayerByConnId(connId);
+    if (!player) return;
+    const senderId = player.id;
     // Only host/admin can start wrapped
     if (this.room.hostId !== senderId) return;
 
@@ -1320,21 +1327,58 @@ export default class CozyGameServer implements Party.Server {
 
   // Override handleNextRound for Heist or add specific logic
 
-  handleHeistVotekick(playerId: string, targetId: string) {
+  handleHeistVotekick(connId: string, targetId: string) {
     // Reuse logic mapped to accusation
-    this.handleHeistAccusation(playerId, targetId);
+    this.handleHeistAccusation(connId, targetId);
   }
 
-  handleAdminEndGame(playerId: string) {
-    const p = this.room.players[playerId];
+  handleAdminEndGame(connId: string) {
+    const p = this.findPlayerByConnId(connId);
+    if (!p) return;
+    const playerId = p.id;
     // Simple auth check by name or host
-    if (p?.name !== 'mo' && this.room.hostId !== playerId) return;
+    if (p.name !== 'mo' && this.room.hostId !== playerId) return;
 
     log('Admin ended game', { by: p.name });
     this.room.phase = 'lobby';
     this.room.currentGame = null;
     this.room.round = 0;
     this.room.heistState = null;
+    this.broadcastSync();
+  }
+
+  handleHostKick(connId: string, targetId: string) {
+    const kicker = this.findPlayerByConnId(connId);
+    if (!kicker) return;
+    // Only host can kick
+    if (this.room.hostId !== kicker.id) return;
+    // Can't kick yourself
+    if (kicker.id === targetId) return;
+
+    const target = this.room.players[targetId];
+    if (!target) return;
+
+    log('Host kicked player', { kickedBy: kicker.name, target: target.name });
+
+    // Notify the kicked player
+    const targetConn = this.findConnById(target.odersId);
+    if (targetConn) {
+      this.sendTo(targetConn, { type: 'kicked', reason: 'You were removed by the host.' });
+    }
+
+    // Remove from player list
+    delete this.room.players[targetId];
+
+    // If too few players mid-game, return to lobby
+    const connectedPlayers = getConnectedPlayers(this.room);
+    if (
+      connectedPlayers.length < 2 &&
+      this.room.currentGame &&
+      !['results', 'sentencing', 'heist-result', 'lobby'].includes(this.room.phase)
+    ) {
+      this.handleLeaveGame();
+    }
+
     this.broadcastSync();
   }
 
