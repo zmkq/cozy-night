@@ -1,6 +1,11 @@
 import 'dotenv/config';
 import { hashPassword } from '../lib/auth';
-import { kv } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
+
+const kv = new Redis({
+  url: process.env.KV_REST_API_URL!,
+  token: process.env.KV_REST_API_TOKEN!,
+});
 import config from '../data/config.json';
 
 // Types matching lib/db.ts
