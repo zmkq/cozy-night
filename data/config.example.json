@@ -59,6 +59,76 @@
       ]
     }
   ],
+  "games": [
+    {
+      "id": "heist",
+      "name": "Heist",
+      "emoji": "💰",
+      "tagline": "Who is the mole?",
+      "desc": "A big heist! Plan, execute, and expose the traitor before they fly away with everything!",
+      "color": "#F59E0B",
+      "accent": "#FFD93D",
+      "gradient": "from-amber-400 to-orange-600",
+      "difficulty": "Psychological",
+      "duration": "10 mins",
+      "points": "1200",
+      "isNew": true,
+      "isFlagship": true
+    },
+    {
+      "id": "group-trial",
+      "name": "Squad Trial",
+      "emoji": "⚖️",
+      "tagline": "You are all accused",
+      "desc": "Judgment day is here, and no one is above the law. Hear the defense, then vote: innocent or guilty. Justice for all!",
+      "color": "#EF4444",
+      "accent": "#DC2626",
+      "gradient": "from-red-500 to-rose-700",
+      "difficulty": "Chaos",
+      "duration": "15 mins",
+      "points": "2000",
+      "isFlagship": true
+    },
+    {
+      "id": "saboteur",
+      "name": "Saboteur",
+      "emoji": "🕵️‍♂️",
+      "tagline": "Expose the saboteur",
+      "desc": "Someone is secretly sabotaging the squad from within. Will you catch them or let them ruin everything? Watch out for shady moves!",
+      "color": "#FF4D6A",
+      "accent": "#F43F5E",
+      "gradient": "from-pink-500 to-rose-500",
+      "difficulty": "Medium",
+      "duration": "5 mins",
+      "points": "900"
+    },
+    {
+      "id": "rapid-fire",
+      "name": "Rapid Fire",
+      "emoji": "⚡",
+      "tagline": "Fastest wins",
+      "desc": "No time to think, only for the smart and fast. Answer before the timer runs out. Every second counts!",
+      "color": "#3B82F6",
+      "accent": "#2563EB",
+      "gradient": "from-blue-400 to-indigo-600",
+      "difficulty": "Hard",
+      "duration": "3 mins",
+      "points": "500"
+    },
+    {
+      "id": "most-likely",
+      "name": "Most Likely To",
+      "emoji": "👆",
+      "tagline": "Expose your friends",
+      "desc": "Who matches the roast best? Point at the player who fits the description. Can the squad agree?",
+      "color": "#10B981",
+      "accent": "#059669",
+      "gradient": "from-emerald-400 to-green-600",
+      "difficulty": "Easy",
+      "duration": "5 mins",
+      "points": "750"
+    }
+  ],
   "rapidFireQuestions": [
     {
       "id": "q1",
