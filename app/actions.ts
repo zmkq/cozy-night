@@ -450,3 +450,41 @@ export async function setRoomPublicAction(
   }
 }
 
+export async function getMemoriesAction(roomCode: string) {
+  try {
+    const { getMemories } = await import('@/lib/db');
+    const memories = await getMemories(roomCode.toUpperCase());
+    return { memories };
+  } catch (err: any) {
+    console.error('Get Memories Error:', err);
+    return { memories: [] };
+  }
+}
+
+export async function deleteMemoryAction(roomCode: string, memoryId: string) {
+  try {
+    const cookieStore = await cookies();
+    const session = await getIronSession<SessionData>(cookieStore, sessionOptions);
+    const roomSession = getRoomSession(session, roomCode);
+
+    if (!roomSession.isLoggedIn || !roomSession.user) {
+      return { error: 'Unauthorized' };
+    }
+
+    const { getMemories } = await import('@/lib/db');
+    const { Redis } = await import('@upstash/redis');
+    const kv = new Redis({
+      url: process.env.KV_REST_API_URL!,
+      token: process.env.KV_REST_API_TOKEN!,
+    });
+
+    const memories = await getMemories(roomCode.toUpperCase());
+    const updated = memories.filter((m: any) => m.id !== memoryId);
+    await kv.set(`room:${roomCode.toUpperCase()}:memories`, updated);
+    revalidatePath(`/${roomCode}/memories`);
+    return { success: true };
+  } catch (err: any) {
+    console.error('Delete Memory Error:', err);
+    return { error: 'Failed to delete memory.' };
+  }
+}
