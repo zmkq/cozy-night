@@ -111,6 +111,11 @@ export interface GameRoom {
     prompt?: string | { p: string; a: string };
     word?: string;
     saboteurId?: string;
+    category?: string;
+    grid?: string[];
+    targetIndex?: number;
+    coords?: string;
+    targetWord?: string;
     drawerId?: string;
     fakeDrawerId?: string;
     guesserIds?: string[];
