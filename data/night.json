@@ -1,0 +1,71 @@
+{
+  "users": [
+    {
+      "id": "mo",
+      "name": "Mo",
+      "avatar": "🎅",
+      "hash": "$2b$10$kQEuvwVlpjd8wkNy/7jHju63Nq2CK.u5pX5wHedlDoaLXc9vKVDAq",
+      "hints": [
+        "The Host",
+        "fucking sexy",
+        "sexy + fuck? hmm?"
+      ],
+      "isAdmin": true
+    },
+    {
+      "id": "yazan",
+      "name": "Yazan",
+      "avatar": "🦁",
+      "hash": "$2b$10$kQEuvwVlpjd8wkNy/7jHju63Nq2CK.u5pX5wHedlDoaLXc9vKVDAq",
+      "hints": [
+        "Yazan ____",
+        "____ + sharmoot"
+      ]
+    },
+    {
+      "id": "mustafa",
+      "name": "Mustafa",
+      "avatar": "🏎️",
+      "hash": "$2b$10$kQEuvwVlpjd8wkNy/7jHju63Nq2CK.u5pX5wHedlDoaLXc9vKVDAq",
+      "hints": [
+        "mustafa + ______ (Your fucking best friend)",
+        "_____ starts with H, ends with R 💔 (wish it was me)",
+        "mustafahaidar يا منيك"
+      ]
+    },
+    {
+      "id": "omar",
+      "name": "Omar",
+      "avatar": "🎨",
+      "hash": "$2b$10$kQEuvwVlpjd8wkNy/7jHju63Nq2CK.u5pX5wHedlDoaLXc9vKVDAq",
+      "hints": [
+        "Your dad name + ____",
+        "ashraf + abu___",
+        "ashrafabuteez يا منيك"
+      ]
+    }
+  ],
+  "rsvp": {
+    "mo": {
+      "status": "coming",
+      "note": "",
+      "updatedAt": 1766421244500
+    },
+    "yazan": {
+      "status": "coming",
+      "note": "",
+      "updatedAt": 1766474882616
+    }
+  },
+  "leaderboard": {},
+  "gameState": {
+    "gameId": null,
+    "status": "LOBBY",
+    "phase": "idle",
+    "players": {}
+  },
+  "memories": [],
+  "settings": {
+    "isOpen": false
+  }
+}

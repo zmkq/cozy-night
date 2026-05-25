@@ -1,0 +1,602 @@
+{
+  "event": {
+    "appName": "HOLIDAY NIGHT",
+    "eventTitle": "HOLIDAY PARTY 2026",
+    "hostName": "Santa",
+    "location": "North Pole",
+    "date": "December 25",
+    "dressCode": "Ugly Christmas Sweater",
+    "footerMessage": "Grab your cocoa and join the party \u2615",
+    "gateClosedQuotes": [
+      "No entry! Don't even try. \ud83d\udddd\ufe0f",
+      "Arrived on time? Strange.. usually you're still in bed!",
+      "Wait patiently, you legend.",
+      "Go back to sleep, the party hasn't started yet.",
+      "I see you trying to enter.. even if you jump you won't get in! \ud83d\udddd\ufe0f"
+    ]
+  },
+  "users": [
+    {
+      "id": "santa",
+      "name": "Santa",
+      "avatar": "\ud83c\udf85",
+      "hash": "$2b$10$kQEuvwVlpjd8wkNy/7jHju63Nq2CK.u5pX5wHedlDoaLXc9vKVDAq",
+      "hints": [
+        "The Host",
+        "Wears a red suit",
+        "Likes cookies and milk"
+      ],
+      "isAdmin": true
+    },
+    {
+      "id": "elf",
+      "name": "Buddy Elf",
+      "avatar": "\ud83e\udddd",
+      "hash": "$2b$10$kQEuvwVlpjd8wkNy/7jHju63Nq2CK.u5pX5wHedlDoaLXc9vKVDAq",
+      "hints": [
+        "Works in the toy workshop",
+        "Short and cheerful"
+      ]
+    },
+    {
+      "id": "rudolph",
+      "name": "Rudolph",
+      "avatar": "\ud83e\udd8c",
+      "hash": "$2b$10$kQEuvwVlpjd8wkNy/7jHju63Nq2CK.u5pX5wHedlDoaLXc9vKVDAq",
+      "hints": [
+        "Has a glowing red nose",
+        "Leads the sleigh"
+      ]
+    },
+    {
+      "id": "snowman",
+      "name": "Frosty",
+      "avatar": "\u26c4",
+      "hash": "$2b$10$kQEuvwVlpjd8wkNy/7jHju63Nq2CK.u5pX5wHedlDoaLXc9vKVDAq",
+      "hints": [
+        "Made of snow",
+        "Has a carrot nose"
+      ]
+    }
+  ],
+  "rapidFireQuestions": [
+    {
+      "id": "q1",
+      "text": "Which of these is the safest password according to security experts?",
+      "options": [
+        "password123",
+        "qwerty",
+        "correcthorsebatterystaple",
+        "admin"
+      ],
+      "correctAnswer": 2
+    },
+    {
+      "id": "q2",
+      "text": "What do you do if your computer catches fire?",
+      "options": [
+        "Pour water on it",
+        "Unplug it and scream",
+        "Send an email to the fire department",
+        "Post it on social media first"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "id": "q3",
+      "text": "What is the first rule of Fight Club?",
+      "options": [
+        "You do not talk about Fight Club",
+        "You must bring cookies",
+        "Wear comfortable shoes",
+        "No crying allowed"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "id": "q4",
+      "text": "If a player is acting extremely sus, what is your immediate reaction?",
+      "options": [
+        "Call an emergency meeting",
+        "Stay silent and watch",
+        "Accuse them with no evidence",
+        "Run away to the reactor"
+      ],
+      "correctAnswer": 2
+    },
+    {
+      "id": "q5",
+      "text": "Who is most likely to crash the production database on a Friday afternoon?",
+      "options": [
+        "The intern",
+        "The senior architect",
+        "The CEO trying to fix a typo",
+        "The automated test suite"
+      ],
+      "correctAnswer": 0
+    }
+  ],
+  "saboteurPrompts": [
+    "A bad habit you do when thinking hard",
+    "Your absolute favorite comfort food when you are sad",
+    "Something you bought that was a complete waste of money",
+    "A chore you absolutely hate doing and avoid at all costs",
+    "A movie or book you pretend to like to sound smart",
+    "Your go-to karaoke song when you want to make everyone laugh",
+    "Something you are weirdly superstitious about",
+    "The longest you have ever gone without sleeping and why",
+    "An unusually specific fear you have that makes no sense",
+    "The best excuse you've ever used to get out of a boring meeting",
+    "Something you could talk about for hours without any preparation",
+    "A trend you think is completely stupid but everyone else loves",
+    "The first thing you would buy if you won a million dollars",
+    "Your dream vacation destination that is NOT a beach or island"
+  ],
+  "mostLikelyPrompts": [
+    "Who is most likely to order the most expensive thing on the menu?",
+    "Who is most likely to become a famous influencer by accident?",
+    "Who is most likely to spend their entire paycheck on hobby gear?",
+    "Who is most likely to get lost in their own neighborhood?",
+    "Who is most likely to win a debate on a topic they know nothing about?",
+    "Who is most likely to start a business that sells something completely useless?",
+    "Who is most likely to stay up all night reading a Wikipedia rabbit hole?",
+    "Who is most likely to keep a secret for 10 years without telling anyone?",
+    "Who is most likely to adopt five stray cats?",
+    "Who is most likely to fall asleep during a loud party?",
+    "Who is most likely to become a stand-up comedian?",
+    "Who is most likely to be late to their own birthday party?"
+  ],
+  "lieRatePrompts": [
+    "I have secretly re-gifted a present someone in this room gave me.",
+    "I have pretended to be sick just to stay home and play video games.",
+    "I have stalked someone's social media back to 2018.",
+    "I have used someone else's Netflix/Spotify account without telling them.",
+    "I have lied about my hobbies to impress someone.",
+    "I have eaten a whole tub of ice cream in a single sitting.",
+    "I have talked to myself in the mirror like I was giving an interview.",
+    "I have spent more than 4 hours scrolling social media today.",
+    "I have bought something online and returned it after wearing it once.",
+    "I have pretended to recognize someone when I had no idea who they were.",
+    "I have lied about reading a popular book or seeing a classic movie.",
+    "I have secretly muted a group chat because people were talking too much.",
+    "I have practiced a conversation in my head before having it.",
+    "I have spent money I didn't have just to look successful."
+  ],
+  "trials": [
+    {
+      "id": "1",
+      "text": "Making plans and then asking 'who's coming?' to see if it's worth it.",
+      "category": "petty",
+      "severity": 2
+    },
+    {
+      "id": "2",
+      "text": "Leaving one sip of milk in the carton so you don't have to throw it away.",
+      "category": "laziness",
+      "severity": 1
+    },
+    {
+      "id": "3",
+      "text": "Replying with 'K' or a single emoji to a paragraph-long message.",
+      "category": "cringe",
+      "severity": 2
+    },
+    {
+      "id": "4",
+      "text": "Stealing the best spot on the couch when someone gets up for water.",
+      "category": "petty",
+      "severity": 1
+    },
+    {
+      "id": "5",
+      "text": "Not sending the photos from a trip until 3 months later.",
+      "category": "laziness",
+      "severity": 2
+    },
+    {
+      "id": "6",
+      "text": "Pretending your phone died when you just didn't want to reply.",
+      "category": "deceit",
+      "severity": 3
+    },
+    {
+      "id": "7",
+      "text": "Telling someone a story they told you, completely forgetting they were the source.",
+      "category": "ignorance",
+      "severity": 1
+    },
+    {
+      "id": "8",
+      "text": "Taking a bite out of someone else's food without asking first.",
+      "category": "gluttony",
+      "severity": 2
+    },
+    {
+      "id": "9",
+      "text": "Setting 10 alarms in the morning and waking up the entire house.",
+      "category": "chaos",
+      "severity": 2
+    },
+    {
+      "id": "10",
+      "text": "Asking for a bite of food after saying you weren't hungry.",
+      "category": "greed",
+      "severity": 1
+    },
+    {
+      "id": "11",
+      "text": "Singing along to a song when you clearly don't know the lyrics.",
+      "category": "cringe",
+      "severity": 1
+    },
+    {
+      "id": "12",
+      "text": "Leaving dirty dishes in the sink right next to the empty dishwasher.",
+      "category": "laziness",
+      "severity": 2
+    },
+    {
+      "id": "13",
+      "text": "Using a ridiculously obscure word in casual conversation to look smart.",
+      "category": "ego",
+      "severity": 2
+    },
+    {
+      "id": "14",
+      "text": "Agreeing to help someone move and then suddenly having an emergency.",
+      "category": "treason",
+      "severity": 4
+    }
+  ],
+  "trialCharges": [
+    {
+      "id": "1",
+      "text": "Making plans and then asking 'who's coming?' to see if it's worth it.",
+      "category": "petty",
+      "severity": 2
+    },
+    {
+      "id": "2",
+      "text": "Leaving one sip of milk in the carton so you don't have to throw it away.",
+      "category": "laziness",
+      "severity": 1
+    },
+    {
+      "id": "3",
+      "text": "Replying with 'K' or a single emoji to a paragraph-long message.",
+      "category": "cringe",
+      "severity": 2
+    },
+    {
+      "id": "4",
+      "text": "Stealing the best spot on the couch when someone gets up for water.",
+      "category": "petty",
+      "severity": 1
+    },
+    {
+      "id": "5",
+      "text": "Not sending the photos from a trip until 3 months later.",
+      "category": "laziness",
+      "severity": 2
+    },
+    {
+      "id": "6",
+      "text": "Pretending your phone died when you just didn't want to reply.",
+      "category": "deceit",
+      "severity": 3
+    },
+    {
+      "id": "7",
+      "text": "Telling someone a story they told you, completely forgetting they were the source.",
+      "category": "ignorance",
+      "severity": 1
+    },
+    {
+      "id": "8",
+      "text": "Taking a bite out of someone else's food without asking first.",
+      "category": "gluttony",
+      "severity": 2
+    },
+    {
+      "id": "9",
+      "text": "Setting 10 alarms in the morning and waking up the entire house.",
+      "category": "chaos",
+      "severity": 2
+    },
+    {
+      "id": "10",
+      "text": "Asking for a bite of food after saying you weren't hungry.",
+      "category": "greed",
+      "severity": 1
+    },
+    {
+      "id": "11",
+      "text": "Singing along to a song when you clearly don't know the lyrics.",
+      "category": "cringe",
+      "severity": 1
+    },
+    {
+      "id": "12",
+      "text": "Leaving dirty dishes in the sink right next to the empty dishwasher.",
+      "category": "laziness",
+      "severity": 2
+    },
+    {
+      "id": "13",
+      "text": "Using a ridiculously obscure word in casual conversation to look smart.",
+      "category": "ego",
+      "severity": 2
+    },
+    {
+      "id": "14",
+      "text": "Agreeing to help someone move and then suddenly having an emergency.",
+      "category": "treason",
+      "severity": 4
+    }
+  ],
+  "shotcallerCards": [
+    {
+      "id": "sacrifice",
+      "text": "Choose one player to sacrifice so the rest of us can live in peace.",
+      "outcomes": [
+        {
+          "text": "They lost 3 points and their reputation.",
+          "points": -3
+        },
+        {
+          "text": "Plot twist! They gained 5 points and you lost 3.",
+          "points": 5,
+          "rare": true
+        }
+      ],
+      "revealType": "random"
+    },
+    {
+      "id": "weakest-link",
+      "text": "Point to who you think is the weakest link of the squad.",
+      "outcomes": [
+        {
+          "text": "They lost 2 points and became the room's laughing stock.",
+          "points": -2
+        },
+        {
+          "text": "The underdog strikes back! They stole 3 points from you.",
+          "points": 3,
+          "rare": true,
+          "effect": "steal"
+        }
+      ],
+      "revealType": "random"
+    },
+    {
+      "id": "throne",
+      "text": "Choose the next leader to inherit the throne.",
+      "outcomes": [
+        {
+          "text": "They gained 2 points and took the lead.",
+          "points": 2
+        }
+      ],
+      "revealType": "fixed"
+    },
+    {
+      "id": "alliance",
+      "text": "Form an alliance with another player to dominate the game.",
+      "outcomes": [
+        {
+          "text": "Both of you gained 2 points and dominated.",
+          "points": 2
+        },
+        {
+          "text": "Betrayal! You gained 4 points and they got left behind.",
+          "points": 4,
+          "rare": true
+        },
+        {
+          "text": "They backstabbed you! They gained 4 points and you got nothing.",
+          "points": 4,
+          "rare": true
+        }
+      ],
+      "revealType": "random"
+    },
+    {
+      "id": "immunity",
+      "text": "Grant immunity to a player. Who is safe from losing points?",
+      "outcomes": [
+        {
+          "text": "They are immune from losing points in the next round.",
+          "points": 0,
+          "effect": "immunity"
+        }
+      ],
+      "revealType": "fixed"
+    },
+    {
+      "id": "roulette",
+      "text": "Russian Roulette. Choose a target to pull the trigger on.",
+      "outcomes": [
+        {
+          "text": "Lucky! They gained 5 points.",
+          "points": 5
+        },
+        {
+          "text": "Ouch! They lost 5 points.",
+          "points": -5
+        },
+        {
+          "text": "Nothing happened, the chamber was empty.",
+          "points": 0
+        },
+        {
+          "text": "The gun backfired! Both of you lost 3 points.",
+          "points": -3
+        }
+      ],
+      "revealType": "random"
+    },
+    {
+      "id": "swap",
+      "text": "Choose two players to swap their current scores.",
+      "outcomes": [
+        {
+          "text": "Scores swapped! What goes around comes around.",
+          "points": 0,
+          "effect": "swap"
+        }
+      ],
+      "revealType": "fixed",
+      "showToAll": true
+    },
+    {
+      "id": "tax-collector",
+      "text": "You are the Tax Collector. Collect taxes from everyone.",
+      "outcomes": [
+        {
+          "text": "You collected 3 points from all other players.",
+          "points": 3,
+          "affectsAll": true
+        }
+      ],
+      "revealType": "fixed",
+      "showToAll": true
+    },
+    {
+      "id": "trust-fall",
+      "text": "Trust Fall. Who will catch you, and who will let you drop?",
+      "outcomes": [
+        {
+          "text": "They caught you! Both of you gained 2 points.",
+          "points": 2
+        },
+        {
+          "text": "They let you drop! You lost 3 points, they gained 2.",
+          "points": -3,
+          "rare": true
+        }
+      ],
+      "revealType": "random"
+    },
+    {
+      "id": "interrogation",
+      "text": "Interrogation. The target must tell the truth next round.",
+      "outcomes": [
+        {
+          "text": "They are under surveillance. +2 points if we catch them lying.",
+          "points": 0
+        }
+      ],
+      "revealType": "fixed"
+    },
+    {
+      "id": "all-in",
+      "text": "High Stakes. Either everyone gains 2 points, or everyone loses 2.",
+      "outcomes": [
+        {
+          "text": "Everyone gained 2 points! Celebrating all night.",
+          "points": 2,
+          "affectsAll": true
+        },
+        {
+          "text": "Everyone lost 2 points! A sad night indeed.",
+          "points": -2,
+          "affectsAll": true
+        }
+      ],
+      "revealType": "conditional"
+    },
+    {
+      "id": "judgment-day",
+      "text": "Judgment Day. The lowest scoring player will either gain 5 or lose 5.",
+      "outcomes": [
+        {
+          "text": "Mercy granted! They gained 5 points.",
+          "points": 5
+        },
+        {
+          "text": "Doom! They lost 5 points.",
+          "points": -5
+        }
+      ],
+      "revealType": "random"
+    },
+    {
+      "id": "expose",
+      "text": "Expose. The target's next answer will be revealed to everyone.",
+      "outcomes": [
+        {
+          "text": "Exposed! No more secrets from now on.",
+          "points": 0
+        }
+      ],
+      "revealType": "fixed"
+    },
+    {
+      "id": "silence",
+      "text": "Silence. The target cannot use tokens next round.",
+      "outcomes": [
+        {
+          "text": "Silenced! No tokens, shields, or help.",
+          "points": 0
+        }
+      ],
+      "revealType": "fixed"
+    },
+    {
+      "id": "reverse",
+      "text": "Reverse Card. Any negative effect is reflected back to the sender.",
+      "outcomes": [
+        {
+          "text": "Successfully activated! You are protected.",
+          "points": 0,
+          "effect": "reverse"
+        }
+      ],
+      "revealType": "fixed"
+    },
+    {
+      "id": "steal",
+      "text": "Steal. Steal 2 points from your target.",
+      "outcomes": [
+        {
+          "text": "Theft successful! Gained 2 points, target lost 2.",
+          "points": 2,
+          "effect": "steal"
+        },
+        {
+          "text": "Caught red-handed! You lost 3 points.",
+          "points": -3,
+          "rare": true
+        }
+      ],
+      "revealType": "random"
+    }
+  ],
+  "plotTwists": [
+    {
+      "id": "double-jeopardy",
+      "text": "\u26a1 Double Jeopardy: All points doubled!",
+      "effect": "double_votes"
+    },
+    {
+      "id": "mistrial",
+      "text": "\ud83d\udd04 Mistrial: Everyone must vote again!",
+      "effect": "forced_revote"
+    },
+    {
+      "id": "diplomatic-immunity",
+      "text": "\ud83d\udee1\ufe0f Diplomatic Immunity: The accused is protected!",
+      "effect": "immunity"
+    },
+    {
+      "id": "mob-justice",
+      "text": "\ud83d\udc65 Mob Justice: Points will be deducted from everyone!",
+      "effect": "all_guilty"
+    },
+    {
+      "id": "switcheroo",
+      "text": "\ud83d\udd00 Switcheroo: One of the judges is now the accused!",
+      "effect": "swap_accused"
+    }
+  ]
+}
