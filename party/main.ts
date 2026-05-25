@@ -227,7 +227,8 @@ type ClientMessage =
   | { type: 'heist-continue' }
   | { type: 'heist-start-accusation' }
   | { type: 'saboteur-guess'; word: string }
-  | { type: 'admin-end-game' };
+  | { type: 'admin-end-game' }
+  | { type: 'reaction'; emoji: string };
 
 // ============ PROMPTS ============
 const SABOTEUR_PROMPTS = config.saboteurPrompts;
@@ -503,6 +504,9 @@ export default class CozyGameServer implements Party.Server {
           break;
         case 'admin-end-game':
           this.handleAdminEndGame(sender.id);
+          break;
+        case 'reaction':
+          this.handleReaction(sender.id, msg.emoji);
           break;
       }
     } catch (e) {
@@ -1015,11 +1019,13 @@ export default class CozyGameServer implements Party.Server {
     };
   }
 
-  handleHeistMissionSelect(playerId: string, operativeIds: string[]) {
+  handleHeistMissionSelect(connId: string, operativeIds: string[]) {
+    const player = this.findPlayerByConnId(connId);
+    if (!player) return;
+    const playerId = player.id;
     const s = this.room.heistState;
     if (!s || s.phase !== 'briefing') return;
 
-    // Validate Leader
     // Validate Leader
     const playerIds = Object.keys(s.roles).sort();
     const leaderId = playerIds[s.leaderIndex];
@@ -1034,7 +1040,10 @@ export default class CozyGameServer implements Party.Server {
     this.broadcastSync();
   }
 
-  handleHeistVote(playerId: string, vote: 'approve' | 'reject') {
+  handleHeistVote(connId: string, vote: 'approve' | 'reject') {
+    const player = this.findPlayerByConnId(connId);
+    if (!player) return;
+    const playerId = player.id;
     const s = this.room.heistState;
     if (!s || s.phase !== 'voting') return;
 
@@ -1085,7 +1094,10 @@ export default class CozyGameServer implements Party.Server {
     this.broadcastSync();
   }
 
-  handleHeistAction(playerId: string, action: 'commit' | 'sabotage') {
+  handleHeistAction(connId: string, action: 'commit' | 'sabotage') {
+    const player = this.findPlayerByConnId(connId);
+    if (!player) return;
+    const playerId = player.id;
     const s = this.room.heistState;
     if (!s || s.phase !== 'execution') return;
 
@@ -1155,7 +1167,10 @@ export default class CozyGameServer implements Party.Server {
     this.checkHeistEndGame();
   }
 
-  handleHeistStartAccusation(playerId: string) {
+  handleHeistStartAccusation(connId: string) {
+    const player = this.findPlayerByConnId(connId);
+    if (!player) return;
+    const playerId = player.id;
     const s = this.room.heistState;
     if (!s) return;
 
@@ -1174,14 +1189,17 @@ export default class CozyGameServer implements Party.Server {
       s.log.push({
         time: new Date().toISOString(),
         type: 'system',
-        message: `${this.room.players[playerId]?.name} called an Emergency Meeting!`,
+        message: `${player.name} called an Emergency Meeting!`,
       });
 
       this.broadcastSync();
     }
   }
 
-  handleHeistAccusation(playerId: string, targetId: string) {
+  handleHeistAccusation(connId: string, targetId: string) {
+    const player = this.findPlayerByConnId(connId);
+    if (!player) return;
+    const playerId = player.id;
     // Only vote during Accusation phase
     const s = this.room.heistState;
     if (!s || s.phase !== 'accusation') return;
@@ -1247,7 +1265,6 @@ export default class CozyGameServer implements Party.Server {
         });
       }
 
-      // End accusation phase, go to next round (unless game ended)
       // End accusation phase, go to next round (unless game ended)
       if (this.room.heistState?.phase === 'accusation') {
         this.nextHeistRoundOrContinue();
@@ -1487,7 +1504,19 @@ export default class CozyGameServer implements Party.Server {
     // If you voted for the winner, you get points
     for (const [voterId, targetId] of Object.entries(this.room.votes)) {
       if (winners.includes(targetId)) {
-        this.room.players[voterId].score += 200 * multiplier;
+        if (this.room.players[voterId]) {
+          this.room.players[voterId].score += 200 * multiplier;
+        }
+      }
+    }
+
+    // Bet Payouts: If a player's betId matches the winner, they get +200 points!
+    for (const [voterId, sub] of Object.entries(this.room.submissions)) {
+      const betId = (sub as any)?.betId;
+      if (betId && winners.includes(betId)) {
+        if (this.room.players[voterId]) {
+          this.room.players[voterId].score += 200 * multiplier;
+        }
       }
     }
 
@@ -1555,6 +1584,18 @@ export default class CozyGameServer implements Party.Server {
       player.lastActivity = Date.now();
     }
     this.sendTo(conn, { type: 'pong' });
+  }
+
+  handleReaction(connId: string, emoji: string) {
+    const player = this.findPlayerByConnId(connId);
+    if (!player) return;
+    this.broadcast({
+      type: 'emoji-blast',
+      playerId: player.id,
+      playerName: player.name,
+      avatar: player.avatar,
+      emoji,
+    });
   }
 
   handlePlayerDisconnect(playerId: string) {
@@ -1842,8 +1883,11 @@ export default class CozyGameServer implements Party.Server {
     }
   }
 
-  handleSaboteurGuess(playerId: string, word: string) {
+  handleSaboteurGuess(connId: string, word: string) {
     if (this.room.phase !== 'results' || !this.room.roundData) return;
+    const player = this.findPlayerByConnId(connId);
+    if (!player) return;
+    const playerId = player.id;
     const roundData = this.room.roundData as any;
     if (playerId !== roundData.saboteurId) return;
 
@@ -2249,7 +2293,10 @@ export default class CozyGameServer implements Party.Server {
     this.broadcastSync();
   }
 
-  handleTrialEvidence(playerId: string, evidence: string) {
+  handleTrialEvidence(connId: string, evidence: string) {
+    const player = this.findPlayerByConnId(connId);
+    if (!player) return;
+    const playerId = player.id;
     if (this.room.phase !== 'evidence' || !this.room.roundData) return;
     if (playerId === this.room.roundData.accusedId) return;
 
@@ -2269,7 +2316,10 @@ export default class CozyGameServer implements Party.Server {
     }
   }
 
-  handleTrialDefense(playerId: string, defense: string) {
+  handleTrialDefense(connId: string, defense: string) {
+    const player = this.findPlayerByConnId(connId);
+    if (!player) return;
+    const playerId = player.id;
     if (this.room.phase !== 'defense' || !this.room.roundData) return;
     if (playerId !== this.room.roundData.accusedId) return;
 
@@ -2280,7 +2330,10 @@ export default class CozyGameServer implements Party.Server {
     this.broadcastSync();
   }
 
-  handleTrialVote(playerId: string, verdict: 'guilty' | 'not-guilty') {
+  handleTrialVote(connId: string, verdict: 'guilty' | 'not-guilty') {
+    const player = this.findPlayerByConnId(connId);
+    if (!player) return;
+    const playerId = player.id;
     if (this.room.phase !== 'voting' || !this.room.roundData) return;
     if (playerId === this.room.roundData.accusedId) return;
 
@@ -2334,7 +2387,10 @@ export default class CozyGameServer implements Party.Server {
     }, 10000);
   }
 
-  handleTrialNextPhase(senderId: string) {
+  handleTrialNextPhase(connId: string) {
+    const player = this.findPlayerByConnId(connId);
+    if (!player) return;
+    const senderId = player.id;
     // Force advance logic for host
     if (this.room.hostId !== senderId) return;
 

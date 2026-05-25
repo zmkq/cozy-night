@@ -271,6 +271,13 @@ export function useParty({
           case 'pong':
             // Connection is alive
             break;
+          case 'emoji-blast':
+            if (typeof window !== 'undefined') {
+              window.dispatchEvent(
+                new CustomEvent('cozy-emoji-blast', { detail: msg })
+              );
+            }
+            break;
         }
       } catch (e) {
         console.error('Failed to parse message:', e);
@@ -382,6 +389,16 @@ export function useParty({
     [socket]
   );
 
+  // Send reaction (Anyone)
+  const sendReaction = useCallback(
+    (emoji: string) => {
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({ type: 'reaction', emoji }));
+      }
+    },
+    [socket]
+  );
+
   // Get online players - with safety checks
   const players = state?.players
     ? Object.values(state.players).filter((p) => p.connected !== false)
@@ -429,5 +446,6 @@ export function useParty({
     forceAdvance,
     startWrapped,
     triggerAdminEvent,
+    sendReaction,
   };
 }

@@ -8,6 +8,7 @@ import { WinnerScreen } from '@/components/christmas/WinnerScreen';
 import { useGameSync } from '@/hooks/useGameSync';
 import { TajFasFartedOverlay } from '@/components/events/TajFasFartedOverlay';
 import { WrappedOverlay } from '@/components/wrapped/WrappedOverlay';
+import { EmojiReactionOverlay } from '@/components/games/EmojiReactionOverlay';
 
 interface PartyWrapperProps {
   children: ReactNode;
@@ -51,6 +52,7 @@ export function PartyWrapper({
         <WrappedOverlay />
       </AnimatePresence>
       <TajFasFartedOverlay userId={userId} roomCode={roomCode} />
+      <EmojiReactionOverlay />
     </PartyProvider>
   );
 }
