@@ -1,4 +1,10 @@
 # 🎮 Cozy Night (cozynight.itsmo.xyz)
+
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/40e4fdad-3cf7-41bc-a0ab-1995f086288f" width="100%" autoplay loop muted playsinline></video>
+</div>
+
+
 ### *A Real-Time, Open-Source Multiplayer Party Game Platform*
 
 [![Next.js 16](https://img.shields.io/badge/Next.js-16%20%28React%2019%29-black?logo=next.js&style=flat-square)](https://nextjs.org/)
